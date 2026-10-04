@@ -16,6 +16,7 @@ from tkinter import filedialog, messagebox
 import time
 
 from puzzle import FutoshikiPuzzle, load_puzzle
+from tkinter import font as tkfont
 
 class FutoshikiGUI:
     """
@@ -25,7 +26,22 @@ class FutoshikiGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Futoshiki Puzzle Solver - Assignment 1")
-        self.root.geometry("850x700")
+        window_system = self.root.tk.call("tk", "windowingsystem")
+
+        if window_system == "win32":
+            self.root.state("zoomed")
+        elif window_system == "x11":
+            self.root.attributes("-zoomed", True)
+        # Shared font for interface text.
+        self.body_font = tkfont.nametofont("TkDefaultFont")
+        self.body_font.configure(size=14)
+
+        # Use this font for widgets created below.
+        self.root.option_add("*Font", self.body_font)
+
+        # A separate bold version for emphasized labels.
+        self.bold_font = self.body_font.copy()
+        self.bold_font.configure(weight="bold")
 
         self.puzzle = FutoshikiPuzzle()
 
@@ -208,6 +224,15 @@ class FutoshikiGUI:
 
     def display_puzzle(self):
 
+        # Clear spacing settings left by the previous puzzle.
+        old_columns, old_rows = self.puzzle_frame.grid_size()
+
+        for column in range(old_columns):
+            self.puzzle_frame.grid_columnconfigure(column, minsize=0)
+
+        for row in range(old_rows):
+            self.puzzle_frame.grid_rowconfigure(row, minsize=0)
+
         # Remove old puzzle
         for widget in self.puzzle_frame.winfo_children():
             widget.destroy()
@@ -215,6 +240,13 @@ class FutoshikiGUI:
         self.cells = {}
 
         n = self.puzzle.size
+
+        # Leave room for a clue between every pair of rows and columns.
+        gap = self.bold_font.metrics("linespace") + 12
+
+        for position in range(1, 2 * n - 1, 2):
+            self.puzzle_frame.grid_rowconfigure(position, minsize=gap)
+            self.puzzle_frame.grid_columnconfigure(position, minsize=gap)
 
         # ------------------------------------------------------
         # Create grid
@@ -267,7 +299,7 @@ class FutoshikiGUI:
                 symbol_label = tk.Label(
                     self.puzzle_frame,
                     text=symbol,
-                    font=("Arial", 14, "bold")
+                    font=self.bold_font
                 )
 
                 symbol_label.grid(
@@ -278,16 +310,19 @@ class FutoshikiGUI:
             # Vertical inequality
             else:
 
-                if row2 == row1 + 1:
-                    symbol = operator
-
+                # First express the relationship from top to bottom.
+                if row1 < row2:
+                    top_operator = operator
                 else:
-                    symbol = "<" if operator == ">" else ">"
+                    top_operator = "<" if operator == ">" else ">"
+
+                # The pointed end faces the smaller value.
+                symbol = "^" if top_operator == "<" else "v"
 
                 symbol_label = tk.Label(
                     self.puzzle_frame,
                     text=symbol,
-                    font=("Arial", 14, "bold")
+                    font=self.bold_font
                 )
 
                 symbol_label.grid(
