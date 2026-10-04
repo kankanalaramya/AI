@@ -13,10 +13,10 @@ The file was reviewed, tested, and modified by the student.
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import time
+from tkinter import font as tkfont
 
 from puzzle import FutoshikiPuzzle, load_puzzle
-from tkinter import font as tkfont
+from backtracking import solve_with_backtracking
 
 class FutoshikiGUI:
     """
@@ -335,53 +335,53 @@ class FutoshikiGUI:
     # ==========================================================
 
     def solve(self):
-
         if self.puzzle.size == 0:
-
             messagebox.showwarning(
                 "No Puzzle",
                 "Please load a puzzle first."
             )
-
             return
-
-        # Task 1 placeholder
-        #
-        # Tasks 2 and 3 will implement the actual solvers.
 
         selected_solver = self.solver_var.get()
 
-        self.status_label.config(
-            text="Solving..."
-        )
+        if selected_solver != "Basic Backtracking":
+            messagebox.showinfo(
+                "Not Implemented",
+                "The AC-3 enhanced solver is not implemented yet."
+            )
+            return
+
+        self.display_puzzle()
+
+        self.status_label.config(text="Solving...")
+        self.runtime_label.config(text="-")
+        self.nodes_label.config(text="-")
 
         self.root.update_idletasks()
 
-        start_time = time.perf_counter()
+        result = solve_with_backtracking(self.puzzle, timeout=60)
 
-        # Temporary result for Task 1
-        time.sleep(0.05)
+        self.status_label.config(text=result.status)
+        self.runtime_label.config(text=f"{result.runtime:.6f} seconds")
+        self.nodes_label.config(text=str(result.nodes))
 
-        elapsed = time.perf_counter() - start_time
-
-        self.runtime_label.config(
-            text=f"{elapsed:.6f} seconds"
+        print(
+            f"{selected_solver}: {result.status} | "
+            f"Runtime: {result.runtime:.6f} seconds | "
+            f"Nodes visited: {result.nodes}"
         )
 
-        self.nodes_label.config(
-            text="0"
-        )
+        if result.status == "Solved":
+            for cell, value in result.solution.items():
+                if cell in self.puzzle.givens:
+                    colour = "black"
+                else:
+                    colour = "blue"
 
-        self.status_label.config(
-            text=f"{selected_solver} selected"
-        )
-
-        messagebox.showinfo(
-            "Task 1",
-            "GUI and puzzle loading are working.\n\n"
-            "The actual solver will be implemented in "
-            "Tasks 2 and 3."
-        )
+                self.cells[cell].config(
+                    text=str(value),
+                    foreground=colour
+                )
 
 
 # ==============================================================
