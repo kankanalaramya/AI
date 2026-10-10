@@ -7,7 +7,7 @@ from puzzle import SolverResult, is_consistent_so_far, validate_solution
 # Reference: COSC-4117EL-01 Assignment 1, Task 2 and measurement definitions.
 # AI disclosure: OpenAI Codex added helper imports and corrected node scope
 # and final-validation placement in the student's existing implementation.
-# Prompt link: TODO(student): add this conversation's share link to code/report.
+# Prompt link: https://chatgpt.com/s/cx_6ac9a7918b8881918cd92ac9eaac7337
 def solve_with_backtracking(puzzle, timeout=60):
     start_time = time.perf_counter()
     deadline = start_time + timeout
@@ -29,7 +29,7 @@ def solve_with_backtracking(puzzle, timeout=60):
     # Try the next unassigned cell; validate only after every row is complete.
     # Reference: COSC-4117EL-01 Assignment 1, Tasks 2 and 4.
     # AI disclosure: OpenAI Codex corrected node scope and validation placement.
-    # Prompt link: TODO(student): add this conversation's share link to code/report.
+    # Prompt link: https://chatgpt.com/s/cx_6ac9a7918b8881918cd92ac9eaac7337
     def search(index):
         nonlocal nodes
         check_timeout()
