@@ -7,28 +7,16 @@ Task 1:
 GUI and Puzzle Loading
 
 Generative AI disclosure:
-This code was developed with assistance from ChatGPT.
-The code was reviewed, tested, and modified by the student.
+This file was developed with assistance from ChatGPT.
+The file was reviewed, tested, and modified by the student.
 """
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import time
+from tkinter import font as tkfont
 
-
-class FutoshikiPuzzle:
-
-    def __init__(self):
-        self.size = 0
-        self.givens = {}
-        self.inequalities = []
-
-    def reset(self):
-        """Clear the current puzzle."""
-        self.size = 0
-        self.givens = {}
-        self.inequalities = []
-
+from puzzle import FutoshikiPuzzle, load_puzzle
+from backtracking import solve_with_backtracking
 
 class FutoshikiGUI:
     """
@@ -38,7 +26,22 @@ class FutoshikiGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Futoshiki Puzzle Solver - Assignment 1")
-        self.root.geometry("850x700")
+        window_system = self.root.tk.call("tk", "windowingsystem")
+
+        if window_system == "win32":
+            self.root.state("zoomed")
+        elif window_system == "x11":
+            self.root.attributes("-zoomed", True)
+        # Shared font for interface text.
+        self.body_font = tkfont.nametofont("TkDefaultFont")
+        self.body_font.configure(size=14)
+
+        # Use this font for widgets created below.
+        self.root.option_add("*Font", self.body_font)
+
+        # A separate bold version for emphasized labels.
+        self.bold_font = self.body_font.copy()
+        self.bold_font.configure(weight="bold")
 
         self.puzzle = FutoshikiPuzzle()
 
@@ -188,7 +191,7 @@ class FutoshikiGUI:
             return
 
         try:
-            puzzle = self.parse_puzzle_file(filename)
+            puzzle = load_puzzle(filename)
 
             self.puzzle = puzzle
 
@@ -216,301 +219,19 @@ class FutoshikiGUI:
             )
 
     # ==========================================================
-    # PARSE PUZZLE FILE
-    # ==========================================================
-
-    def parse_puzzle_file(self, filename):
-
-        puzzle = FutoshikiPuzzle()
-
-        try:
-            with open(filename, "r") as file:
-                lines = file.readlines()
-
-        except OSError as error:
-            raise ValueError(
-                f"Could not open file:\n{error}"
-            )
-
-        # Remove blank lines and comments
-        cleaned_lines = []
-
-        for line_number, line in enumerate(lines, start=1):
-
-            line = line.strip()
-
-            if not line:
-                continue
-
-            if line.startswith("#"):
-                continue
-
-            cleaned_lines.append(
-                (line_number, line)
-            )
-
-        if not cleaned_lines:
-            raise ValueError(
-                "The file is empty."
-            )
-
-        # ------------------------------------------------------
-        # Find sections
-        # ------------------------------------------------------
-
-        sections = {
-            "SIZE": [],
-            "GIVENS": [],
-            "INEQUALITIES": []
-        }
-
-        current_section = None
-
-        for line_number, line in cleaned_lines:
-
-            upper_line = line.upper()
-
-            if upper_line in sections:
-
-                current_section = upper_line
-                continue
-
-            # Unknown section
-            if line.isupper() and "," not in line:
-                raise ValueError(
-                    f"Unknown section '{line}' "
-                    f"at line {line_number}."
-                )
-
-            if current_section is None:
-                raise ValueError(
-                    f"Data appears before a section heading "
-                    f"at line {line_number}."
-                )
-
-            sections[current_section].append(
-                (line_number, line)
-            )
-
-        # ------------------------------------------------------
-        # Validate SIZE
-        # ------------------------------------------------------
-
-        if len(sections["SIZE"]) != 1:
-            raise ValueError(
-                "SIZE section must contain exactly one integer."
-            )
-
-        size_line_number, size_text = sections["SIZE"][0]
-
-        try:
-            size = int(size_text)
-
-        except ValueError:
-            raise ValueError(
-                f"Invalid SIZE value at line "
-                f"{size_line_number}."
-            )
-
-        if size <= 0:
-            raise ValueError(
-                "SIZE must be a positive integer."
-            )
-
-        puzzle.size = size
-
-        # ------------------------------------------------------
-        # Validate GIVENS
-        # ------------------------------------------------------
-
-        row_values = {}
-        col_values = {}
-
-        for line_number, text in sections["GIVENS"]:
-
-            parts = [part.strip() for part in text.split(",")]
-
-            if len(parts) != 3:
-                raise ValueError(
-                    f"Invalid GIVENS entry at line "
-                    f"{line_number}.\n"
-                    f"Expected: row,column,value"
-                )
-
-            try:
-                row = int(parts[0])
-                col = int(parts[1])
-                value = int(parts[2])
-
-            except ValueError:
-                raise ValueError(
-                    f"GIVENS values must be integers "
-                    f"at line {line_number}."
-                )
-
-            # Check ranges
-            if not (1 <= row <= size):
-                raise ValueError(
-                    f"Row {row} is outside the range "
-                    f"1..{size} at line {line_number}."
-                )
-
-            if not (1 <= col <= size):
-                raise ValueError(
-                    f"Column {col} is outside the range "
-                    f"1..{size} at line {line_number}."
-                )
-
-            if not (1 <= value <= size):
-                raise ValueError(
-                    f"Value {value} is outside the range "
-                    f"1..{size} at line {line_number}."
-                )
-
-            cell = (row, col)
-
-            # Repeated cell
-            if cell in puzzle.givens:
-                raise ValueError(
-                    f"Cell ({row},{col}) is given more than once."
-                )
-
-            # Duplicate value in same row
-            if row not in row_values:
-                row_values[row] = {}
-
-            if value in row_values[row]:
-                previous_col = row_values[row][value]
-
-                raise ValueError(
-                    f"Duplicate fixed value {value} "
-                    f"in row {row}: columns "
-                    f"{previous_col} and {col}."
-                )
-
-            row_values[row][value] = col
-
-            # Duplicate value in same column
-            if col not in col_values:
-                col_values[col] = {}
-
-            if value in col_values[col]:
-                previous_row = col_values[col][value]
-
-                raise ValueError(
-                    f"Duplicate fixed value {value} "
-                    f"in column {col}: rows "
-                    f"{previous_row} and {row}."
-                )
-
-            col_values[col][value] = row
-
-            puzzle.givens[cell] = value
-
-        # ------------------------------------------------------
-        # Validate INEQUALITIES
-        # ------------------------------------------------------
-
-        inequality_cells = set()
-
-        for line_number, text in sections["INEQUALITIES"]:
-
-            parts = [part.strip() for part in text.split(",")]
-
-            if len(parts) != 5:
-                raise ValueError(
-                    f"Invalid INEQUALITIES entry at line "
-                    f"{line_number}.\n"
-                    f"Expected: row1,column1,operator,row2,column2"
-                )
-
-            try:
-                row1 = int(parts[0])
-                col1 = int(parts[1])
-                operator = parts[2]
-                row2 = int(parts[3])
-                col2 = int(parts[4])
-
-            except ValueError:
-                raise ValueError(
-                    f"Invalid integer in inequality "
-                    f"at line {line_number}."
-                )
-
-            # Validate operator
-            if operator not in ("<", ">"):
-                raise ValueError(
-                    f"Invalid operator '{operator}' "
-                    f"at line {line_number}."
-                )
-
-            # Validate coordinates
-            if not (1 <= row1 <= size):
-                raise ValueError(
-                    f"First row {row1} is outside the range "
-                    f"1..{size} at line {line_number}."
-                )
-
-            if not (1 <= col1 <= size):
-                raise ValueError(
-                    f"First column {col1} is outside the range "
-                    f"1..{size} at line {line_number}."
-                )
-
-            if not (1 <= row2 <= size):
-                raise ValueError(
-                    f"Second row {row2} is outside the range "
-                    f"1..{size} at line {line_number}."
-                )
-
-            if not (1 <= col2 <= size):
-                raise ValueError(
-                    f"Second column {col2} is outside the range "
-                    f"1..{size} at line {line_number}."
-                )
-
-            # Repeated inequality endpoints
-            endpoint_pair = (
-                (row1, col1),
-                (row2, col2)
-            )
-
-            if endpoint_pair in inequality_cells:
-                raise ValueError(
-                    f"Repeated inequality between "
-                    f"({row1},{col1}) and ({row2},{col2})."
-                )
-
-            inequality_cells.add(endpoint_pair)
-
-            # Check horizontal/vertical adjacency
-            row_difference = abs(row1 - row2)
-            col_difference = abs(col1 - col2)
-
-            if row_difference + col_difference != 1:
-                raise ValueError(
-                    f"Inequality cells "
-                    f"({row1},{col1}) and "
-                    f"({row2},{col2}) are not adjacent."
-                )
-
-            puzzle.inequalities.append(
-                (
-                    row1,
-                    col1,
-                    operator,
-                    row2,
-                    col2
-                )
-            )
-
-        return puzzle
-
-    # ==========================================================
     # DISPLAY PUZZLE
     # ==========================================================
 
     def display_puzzle(self):
+
+        # Clear spacing settings left by the previous puzzle.
+        old_columns, old_rows = self.puzzle_frame.grid_size()
+
+        for column in range(old_columns):
+            self.puzzle_frame.grid_columnconfigure(column, minsize=0)
+
+        for row in range(old_rows):
+            self.puzzle_frame.grid_rowconfigure(row, minsize=0)
 
         # Remove old puzzle
         for widget in self.puzzle_frame.winfo_children():
@@ -519,6 +240,13 @@ class FutoshikiGUI:
         self.cells = {}
 
         n = self.puzzle.size
+
+        # Leave room for a clue between every pair of rows and columns.
+        gap = self.bold_font.metrics("linespace") + 12
+
+        for position in range(1, 2 * n - 1, 2):
+            self.puzzle_frame.grid_rowconfigure(position, minsize=gap)
+            self.puzzle_frame.grid_columnconfigure(position, minsize=gap)
 
         # ------------------------------------------------------
         # Create grid
@@ -571,7 +299,7 @@ class FutoshikiGUI:
                 symbol_label = tk.Label(
                     self.puzzle_frame,
                     text=symbol,
-                    font=("Arial", 14, "bold")
+                    font=self.bold_font
                 )
 
                 symbol_label.grid(
@@ -582,16 +310,19 @@ class FutoshikiGUI:
             # Vertical inequality
             else:
 
-                if row2 == row1 + 1:
-                    symbol = operator
-
+                # First express the relationship from top to bottom.
+                if row1 < row2:
+                    top_operator = operator
                 else:
-                    symbol = "<" if operator == ">" else ">"
+                    top_operator = "<" if operator == ">" else ">"
+
+                # The pointed end faces the smaller value.
+                symbol = "^" if top_operator == "<" else "v"
 
                 symbol_label = tk.Label(
                     self.puzzle_frame,
                     text=symbol,
-                    font=("Arial", 14, "bold")
+                    font=self.bold_font
                 )
 
                 symbol_label.grid(
@@ -604,53 +335,53 @@ class FutoshikiGUI:
     # ==========================================================
 
     def solve(self):
-
         if self.puzzle.size == 0:
-
             messagebox.showwarning(
                 "No Puzzle",
                 "Please load a puzzle first."
             )
-
             return
-
-        # Task 1 placeholder
-        #
-        # Tasks 2 and 3 will implement the actual solvers.
 
         selected_solver = self.solver_var.get()
 
-        self.status_label.config(
-            text="Solving..."
-        )
+        if selected_solver != "Basic Backtracking":
+            messagebox.showinfo(
+                "Not Implemented",
+                "The AC-3 enhanced solver is not implemented yet."
+            )
+            return
+
+        self.display_puzzle()
+
+        self.status_label.config(text="Solving...")
+        self.runtime_label.config(text="-")
+        self.nodes_label.config(text="-")
 
         self.root.update_idletasks()
 
-        start_time = time.perf_counter()
+        result = solve_with_backtracking(self.puzzle, timeout=60)
 
-        # Temporary result for Task 1
-        time.sleep(0.05)
+        self.status_label.config(text=result.status)
+        self.runtime_label.config(text=f"{result.runtime:.6f} seconds")
+        self.nodes_label.config(text=str(result.nodes))
 
-        elapsed = time.perf_counter() - start_time
-
-        self.runtime_label.config(
-            text=f"{elapsed:.6f} seconds"
+        print(
+            f"{selected_solver}: {result.status} | "
+            f"Runtime: {result.runtime:.6f} seconds | "
+            f"Nodes visited: {result.nodes}"
         )
 
-        self.nodes_label.config(
-            text="0"
-        )
+        if result.status == "Solved":
+            for cell, value in result.solution.items():
+                if cell in self.puzzle.givens:
+                    colour = "black"
+                else:
+                    colour = "blue"
 
-        self.status_label.config(
-            text=f"{selected_solver} selected"
-        )
-
-        messagebox.showinfo(
-            "Task 1",
-            "GUI and puzzle loading are working.\n\n"
-            "The actual solver will be implemented in "
-            "Tasks 2 and 3."
-        )
+                self.cells[cell].config(
+                    text=str(value),
+                    foreground=colour
+                )
 
 
 # ==============================================================
