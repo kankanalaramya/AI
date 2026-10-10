@@ -1,4 +1,5 @@
 from collections import deque
+from puzzle import validate_solution
 
 def print_status (doms, size):
     for x in range(1, size+1):
@@ -31,8 +32,6 @@ def solve_with_ac3 (puzzle, timeout=60):
             if cellx != (row, col):
                 domains[cellx].discard(val)
 
-    # AI assistance: ChatGPT helped add REVISE and the AC-3 queue below.
-    # Each directed pair maps to all rules between its two cells.
     rules = {}
     for cell1 in domains:
         for cell2 in domains:
@@ -50,22 +49,23 @@ def solve_with_ac3 (puzzle, timeout=60):
         reverse_op = "<" if op == ">" else ">"
         rules[(cell2, cell1)].append(reverse_op)
 
+    def values_consistent(cell1, v1, cell2, v2):
+        # The same pair of values must satisfy every rule between the cells.
+        for op in rules[(cell1, cell2)]:
+            if (op == "!=" and v1 == v2):
+                return False
+            if (op == ">" and v1 <= v2):
+                return False
+            if (op == "<" and v1 >= v2):
+                return False
+        return True
+
     def revise(cell1, cell2):
         changed = False
         for v1 in domains[cell1].copy():
             keep_v1 = False
             for v2 in domains[cell2]:
-                # The SAME v2 must satisfy every rule for this pair.
-                supported = True
-                for op in rules[(cell1, cell2)]:
-                    if (op == "!=" and v1 == v2):
-                        supported = False
-                    if (op == ">" and v1 <= v2):
-                        supported = False
-                    if (op == "<" and v1 >= v2):
-                        supported = False
-
-                if supported:
+                if values_consistent(cell1, v1, cell2, v2):
                     keep_v1 = True
                     break
 
@@ -74,13 +74,17 @@ def solve_with_ac3 (puzzle, timeout=60):
                 changed = True
         return changed
 
-    def ac3():
+    def ac3(arcs=None):
         # The earlier given-value filtering may already have emptied a domain.
         for cell in domains:
             if len(domains[cell]) == 0:
                 return False
 
-        queue = deque(rules)
+        # Initially use all arcs; after a choice, start with affected arcs.
+        if arcs is None:
+            queue = deque(rules)
+        else:
+            queue = deque(arcs)
         while queue:
             cell1, cell2 = queue.popleft()
             if revise(cell1, cell2):
@@ -93,12 +97,83 @@ def solve_with_ac3 (puzzle, timeout=60):
                         queue.append((neighbor, cell1))
         return True
 
-    consistent = ac3()
+    def select_cell():
+        selected = None
+        smallest_domain = size + 1
+        highest_degree = -1
+        for cell in domains:
+            # Singleton domains already determine the value of a cell.
+            if len(domains[cell]) <= 1:
+                continue
+
+            degree = 0
+            for neighbor in domains:
+                if (cell, neighbor) in rules and len(domains[neighbor]) > 1:
+                    degree += 1
+
+            # MRV first, then most unassigned neighbors (degree).
+            # Remaining ties keep the original row-major order.
+            if (len(domains[cell]) < smallest_domain or
+                (len(domains[cell]) == smallest_domain and degree > highest_degree)):
+                selected = cell
+                smallest_domain = len(domains[cell])
+                highest_degree = degree
+        return selected
+
+    def order_values(cell):
+        scores = []
+        for val in domains[cell]:
+            removed = 0
+            for neighbor in domains:
+                if (cell, neighbor) not in rules or len(domains[neighbor]) <= 1:
+                    continue
+                for other_val in domains[neighbor]:
+                    if values_consistent(cell, val, neighbor, other_val) == False:
+                        removed += 1
+            scores.append((removed, val))
+
+        # LCV: fewest excluded neighbor values first, then ascending value.
+        scores.sort()
+        return [val for removed, val in scores]
+
+    def search():
+        nonlocal domains
+        cell = select_cell()
+        if cell is None:
+            assignments = {}
+            for assigned_cell in domains:
+                if len(domains[assigned_cell]) != 1:
+                    return False
+                assignments[assigned_cell] = next(iter(domains[assigned_cell]))
+            return validate_solution(puzzle, assignments)
+
+        # Copy every set: a dictionary-only copy would share the domain sets.
+        saved_domains = {c: values.copy() for c, values in domains.items()}
+        for val in order_values(cell):
+            # Each attempt starts with the domains from before this decision.
+            domains = {c: values.copy() for c, values in saved_domains.items()}
+            domains[cell] = {val}
+
+            arcs = []
+            for neighbor in domains:
+                if (neighbor, cell) in rules:
+                    arcs.append((neighbor, cell))
+
+            if ac3(arcs) and search():
+                return True
+
+        # Every candidate failed; restore this call's original domains.
+        domains = saved_domains
+        return False
+
+    solved = False
+    if ac3():
+        solved = search()
     print_status(domains, size)
-    if consistent == False:
-        print("No solution: a domain became empty.")
-    # True means propagation succeeded; search may still be needed.
-    return consistent
+    if solved == False:
+        print("No solution.")
+    # True now means a complete solution passed independent validation.
+    return solved
 
 from puzzle import FutoshikiPuzzle
 
