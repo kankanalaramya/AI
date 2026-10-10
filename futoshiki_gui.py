@@ -17,7 +17,12 @@ from tkinter import font as tkfont
 
 from puzzle import FutoshikiPuzzle, load_puzzle
 from backtracking import solve_with_backtracking
+from ac3_solver import solve_with_ac3
 
+# Reference: Assignment 1, Task 1, solver selection and result display.
+# AI disclosure: OpenAI Codex updated only the solve method in this existing
+# class to connect the AC-3 menu option to solve_with_ac3.
+# Prompt link: TODO(student): add this conversation's share link to code/report.
 class FutoshikiGUI:
     """
     Main GUI application for Assignment 1.
@@ -334,6 +339,11 @@ class FutoshikiGUI:
     # SOLVE BUTTON
     # ==========================================================
 
+    # Run the selected solver and display its shared SolverResult fields.
+    # Reference: Assignment 1, Task 1, solver selection, status, and metrics.
+    # AI disclosure: OpenAI Codex replaced the AC-3 "Not Implemented" guard
+    # with solver dispatch; existing timeout, rendering, and metrics are retained.
+    # Prompt link: TODO(student): add this conversation's share link to code/report.
     def solve(self):
         if self.puzzle.size == 0:
             messagebox.showwarning(
@@ -344,12 +354,11 @@ class FutoshikiGUI:
 
         selected_solver = self.solver_var.get()
 
-        if selected_solver != "Basic Backtracking":
-            messagebox.showinfo(
-                "Not Implemented",
-                "The AC-3 enhanced solver is not implemented yet."
-            )
-            return
+        solvers = {
+            "Basic Backtracking": solve_with_backtracking,
+            "AC-3 Enhanced Backtracking": solve_with_ac3,
+        }
+        solver = solvers[selected_solver]
 
         self.display_puzzle()
 
@@ -359,7 +368,7 @@ class FutoshikiGUI:
 
         self.root.update_idletasks()
 
-        result = solve_with_backtracking(self.puzzle, timeout=60)
+        result = solver(self.puzzle, timeout=60)
 
         self.status_label.config(text=result.status)
         self.runtime_label.config(text=f"{result.runtime:.6f} seconds")
