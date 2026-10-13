@@ -1,0 +1,57 @@
+puzzle_file,size,scenario,difficulty_level,method,timeout_seconds,run_number,expected_status,actual_status,time_elapsed_seconds,nodes_visited,solution_valid,pass_fail,computer,python_version,tested_at,notes
+puzzle4.txt,4,valid,not rated,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzle4.txt,4,valid,not rated,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/1x1_valid.txt,1,valid,not rated,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/1x1_valid.txt,1,valid,not rated,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/4x4_challenging.txt,4,valid,challenging,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/4x4_challenging.txt,4,valid,challenging,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/4x4_complete.txt,4,complete,not rated,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/4x4_complete.txt,4,complete,not rated,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/4x4_easy.txt,4,valid,easy,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/4x4_easy.txt,4,valid,easy,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/4x4_empty.txt,4,empty sections,not rated,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/4x4_empty.txt,4,empty sections,not rated,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/unsolvable/4x4_unsolvable.txt,4,unsolvable,not rated,Basic Backtracking,60,1,No solution,,,,,,,,,
+puzzles/unsolvable/4x4_unsolvable.txt,4,unsolvable,not rated,AC-3 Enhanced Backtracking,60,1,No solution,,,,,,,,,
+puzzles/unsolvable/4x4_unsolvable_givens.txt,4,unsolvable,not rated,Basic Backtracking,60,1,No solution,,,,,,,,,
+puzzles/unsolvable/4x4_unsolvable_givens.txt,4,unsolvable,not rated,AC-3 Enhanced Backtracking,60,1,No solution,,,,,,,,,
+puzzles/valid/6x6_challenging.txt,6,valid,challenging,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/6x6_challenging.txt,6,valid,challenging,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/6x6_easy.txt,6,valid,easy,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/6x6_easy.txt,6,valid,easy,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/unsolvable/6x6_unsolvable.txt,6,unsolvable,not rated,Basic Backtracking,60,1,No solution,,,,,,,,,
+puzzles/unsolvable/6x6_unsolvable.txt,6,unsolvable,not rated,AC-3 Enhanced Backtracking,60,1,No solution,,,,,,,,,
+puzzles/valid/8x8_challenging.txt,8,valid,challenging,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/8x8_challenging.txt,8,valid,challenging,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/8x8_easy.txt,8,valid,easy,Basic Backtracking,60,1,Solved,,,,,,,,,
+puzzles/valid/8x8_easy.txt,8,valid,easy,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,
+puzzles/unsolvable/8x8_unsolvable.txt,8,unsolvable,not rated,Basic Backtracking,60,1,No solution,,,,,,,,,
+puzzles/unsolvable/8x8_unsolvable.txt,8,unsolvable,not rated,AC-3 Enhanced Backtracking,60,1,No solution,,,,,,,,,
+puzzles/invalid/malformed_data_before_heading.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_duplicate_column.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_duplicate_row.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_invalid_integer.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_invalid_operator.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_missing_heading.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_nonadjacent.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_out_of_order.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_out_of_range.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_repeated_cell.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_repeated_givens.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_repeated_inequalities.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_repeated_size.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_reversed_duplicate.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_unknown_heading.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/invalid/malformed_wrong_fields.txt,4,malformed,not applicable,GUI loader,,1,Invalid puzzle,,,,,,,,,Expect an informative error dialog; grid and previous metrics clear.
+puzzles/valid/4x4_easy.txt,4,forced timeout,easy,Basic Backtracking,0,1,Time out,,,,,,,,,Call solver directly with timeout=0; GUI uses 60 seconds.
+puzzles/valid/4x4_easy.txt,4,forced timeout,easy,AC-3 Enhanced Backtracking,0,1,Time out,,,,,,,,,Call solver directly with timeout=0; GUI uses 60 seconds.
+puzzles/valid/4x4_single_blank.txt,4,single blank / propagation overhead,easy,Basic Backtracking,60,1,Solved,,,,,,,,,AC-3 forces the last cell; basic tries four values. Compare elapsed times locally.
+puzzles/valid/4x4_single_blank.txt,4,single blank / propagation overhead,easy,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,AC-3 forces the last cell; basic tries four values. Compare elapsed times locally.
+puzzles/valid/6x6_inequalities_only.txt,6,inequalities only / propagation without search,easy,Basic Backtracking,60,1,Solved,,,,,,,,,No givens. AC-3 solves by propagation with zero assignment attempts.
+puzzles/valid/6x6_inequalities_only.txt,6,inequalities only / propagation without search,easy,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,No givens. AC-3 solves by propagation with zero assignment attempts.
+puzzles/valid/6x6_reversed_endpoints.txt,6,equivalent reversed clues,easy,Basic Backtracking,60,1,Solved,,,,,,,,,Same constraints as 6x6_easy; check reversed horizontal and vertical clue display.
+puzzles/valid/6x6_reversed_endpoints.txt,6,equivalent reversed clues,easy,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,Same constraints as 6x6_easy; check reversed horizontal and vertical clue display.
+puzzles/valid/8x8_row_major_friendly.txt,8,AC-3 overhead with fewer nodes,not rated,Basic Backtracking,60,1,Solved,,,,,,,,,Baseline-friendly value order; AC-3 visits fewer nodes but was slower during development.
+puzzles/valid/8x8_row_major_friendly.txt,8,AC-3 overhead with fewer nodes,not rated,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,Baseline-friendly value order; AC-3 visits fewer nodes but was slower during development.
+puzzles/valid/8x8_heuristic_detour.txt,8,AC-3 heuristic detour / more nodes,not rated,Basic Backtracking,60,1,Solved,,,,,,,,,AC-3 visited 392 nodes vs baseline 288 and was slower during development; remeasure locally.
+puzzles/valid/8x8_heuristic_detour.txt,8,AC-3 heuristic detour / more nodes,not rated,AC-3 Enhanced Backtracking,60,1,Solved,,,,,,,,,AC-3 visited 392 nodes vs baseline 288 and was slower during development; remeasure locally.

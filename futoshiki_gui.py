@@ -22,7 +22,7 @@ from ac3_solver import solve_with_ac3
 # Reference: Assignment 1, Task 1, solver selection and result display.
 # AI disclosure: OpenAI Codex updated only the solve method in this existing
 # class to connect the AC-3 menu option to solve_with_ac3.
-# Prompt link: TODO(student): add this conversation's share link to code/report.
+# Prompt link: https://chatgpt.com/s/cx_6ac9a7918b8881918cd92ac9eaac7337
 class FutoshikiGUI:
     """
     Main GUI application for Assignment 1.
@@ -214,6 +214,14 @@ class FutoshikiGUI:
             )
 
         except ValueError as error:
+            # Clear the previous puzzle so Solve cannot run stale input.
+            # AI disclosure: OpenAI Codex added load-failure state cleanup.
+            # Prompt link: https://chatgpt.com/s/cx_6ac9a7918b8881918cd92ac9eaac7337
+            self.puzzle = FutoshikiPuzzle()
+            self.display_puzzle()
+            self.runtime_label.config(text="-")
+            self.nodes_label.config(text="-")
+            self.info_label.config(text="Load a valid Futoshiki puzzle TXT file.")
             self.status_label.config(
                 text="Invalid puzzle"
             )
@@ -269,6 +277,7 @@ class FutoshikiGUI:
                 cell = tk.Label(
                     self.puzzle_frame,
                     text=str(value),
+                    foreground="black",
                     width=5,
                     height=2,
                     font=("Arial", 16, "bold"),
@@ -343,7 +352,7 @@ class FutoshikiGUI:
     # Reference: Assignment 1, Task 1, solver selection, status, and metrics.
     # AI disclosure: OpenAI Codex replaced the AC-3 "Not Implemented" guard
     # with solver dispatch; existing timeout, rendering, and metrics are retained.
-    # Prompt link: TODO(student): add this conversation's share link to code/report.
+    # Prompt link: https://chatgpt.com/s/cx_6ac9a7918b8881918cd92ac9eaac7337
     def solve(self):
         if self.puzzle.size == 0:
             messagebox.showwarning(

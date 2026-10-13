@@ -23,10 +23,10 @@ def load_puzzle(filename):
     puzzle = FutoshikiPuzzle()
 
     try:
-        with open(filename, "r") as file:
+        with open(filename, "r", encoding="utf-8-sig") as file:
             lines = file.readlines()
 
-    except OSError as error:
+    except (OSError, UnicodeError) as error:
         raise ValueError(
             f"Could not open file:\n{error}"
         )
@@ -63,14 +63,28 @@ def load_puzzle(filename):
         "INEQUALITIES": []
     }
 
+    # AI disclosure: OpenAI Codex added strict section validation and UTF-8
+    # error handling. Prompt link:https://chatgpt.com/s/cx_6ace5baac22c8191964a80d948bbdda9
     current_section = None
+    seen_sections = set()
+    section_order = tuple(sections)
 
     for line_number, line in cleaned_lines:
 
         upper_line = line.upper()
 
         if upper_line in sections:
-
+            if upper_line in seen_sections:
+                raise ValueError(
+                    f"Repeated section '{upper_line}' at line {line_number}."
+                )
+            expected = section_order[len(seen_sections)]
+            if upper_line != expected:
+                raise ValueError(
+                    f"Expected section '{expected}' before '{upper_line}' "
+                    f"at line {line_number}."
+                )
+            seen_sections.add(upper_line)
             current_section = upper_line
             continue
 
@@ -90,6 +104,10 @@ def load_puzzle(filename):
         sections[current_section].append(
             (line_number, line)
         )
+
+    missing = [name for name in section_order if name not in seen_sections]
+    if missing:
+        raise ValueError(f"Missing section heading(s): {', '.join(missing)}.")
 
     # ------------------------------------------------------
     # Validate SIZE
@@ -269,10 +287,10 @@ def load_puzzle(filename):
             )
 
         # Repeated inequality endpoints
-        endpoint_pair = (
+        endpoint_pair = frozenset((
             (row1, col1),
             (row2, col2)
-        )
+        ))
 
         if endpoint_pair in inequality_cells:
             raise ValueError(
