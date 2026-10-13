@@ -6,12 +6,13 @@ from puzzle import SolverResult, validate_solution
 
 # Solve with AC-3, recursive backtracking, MRV, degree tie-breaking, and LCV.
 # References: COSC-4117EL-01 Assignment 1, Tasks 3 and 4 and measurement definitions.
+
 # AI disclosure: OpenAI Codex formatted the existing solver, added perf_counter
 # timing before initialization, deadline checks, assignment-attempt counting,
 # and SolverResult returns for success, failure, and timeout. Existing search
 # and propagation algorithms were retained. Development-only printing and the
 # hard-coded demo puzzle were removed at the student's request.
-# Prompt link: TODO(student): add this conversation's share link to code/report.
+# Prompt link: https://chatgpt.com/s/cx_6ace5baac22c8191964a80d948bbdda9
 def solve_with_ac3(puzzle, timeout=60):
     """Return a validated solution and metrics for a parser-validated puzzle.
 

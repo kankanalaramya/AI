@@ -1,0 +1,57 @@
+puzzle_file,size,scenario,difficulty_level,method,timeout_seconds,status,time_elapsed_seconds,nodes_visited,solution_valid
+puzzle_sample.txt,4,valid,not rated,Basic Backtracking,60,Solved,0.00103058,77,True
+puzzle_sample.txt,4,valid,not rated,AC-3,60,Solved,0.003810056,0,True
+puzzles/valid/1x1_valid.txt,1,valid,easy,Basic Backtracking,60,Solved,0.000077219,1,True
+puzzles/valid/1x1_valid.txt,1,valid,easy,AC-3,60,Solved,0.000137395,0,True
+puzzles/valid/4x4_challenging.txt,4,valid,challenging,Basic Backtracking,60,Solved,0.001242933,170,True
+puzzles/valid/4x4_challenging.txt,4,valid,challenging,AC-3,60,Solved,0.003913265,1,True
+puzzles/valid/4x4_complete.txt,4,complete,not rated,Basic Backtracking,60,Solved,0.000133018,0,True
+puzzles/valid/4x4_complete.txt,4,complete,not rated,AC-3,60,Solved,0.001701643,0,True
+puzzles/valid/4x4_easy.txt,4,valid,easy,Basic Backtracking,60,Solved,0.000482797,9,True
+puzzles/valid/4x4_easy.txt,4,valid,easy,AC-3,60,Solved,0.001717349,0,True
+puzzles/valid/4x4_empty.txt,4,empty sections,not rated,Basic Backtracking,60,Solved,0.000573861,40,True
+puzzles/valid/4x4_empty.txt,4,empty sections,not rated,AC-3,60,Solved,0.010559203,8,True
+puzzles/unsolvable/4x4_unsolvable.txt,4,unsolvable,not rated,Basic Backtracking,60,No solution,0.001396776,172,N/A
+puzzles/unsolvable/4x4_unsolvable.txt,4,unsolvable,not rated,AC-3,60,No solution,0.001573405,0,N/A
+puzzles/unsolvable/4x4_unsolvable_givens.txt,4,unsolvable,not rated,Basic Backtracking,60,No solution,0.000114853,4,N/A
+puzzles/unsolvable/4x4_unsolvable_givens.txt,4,unsolvable,not rated,AC-3,60,No solution,0.000404312,0,N/A
+puzzles/valid/6x6_challenging.txt,6,valid,challenging,Basic Backtracking,60,Solved,0.796936338,92345,True
+puzzles/valid/6x6_challenging.txt,6,valid,challenging,AC-3,60,Solved,0.034756038,12,True
+puzzles/valid/6x6_easy.txt,6,valid,easy,Basic Backtracking,60,Solved,0.000496818,27,True
+puzzles/valid/6x6_easy.txt,6,valid,easy,AC-3,60,Solved,0.003203544,0,True
+puzzles/unsolvable/6x6_unsolvable.txt,6,unsolvable,not rated,Basic Backtracking,60,No solution,0.045378806,8772,N/A
+puzzles/unsolvable/6x6_unsolvable.txt,6,unsolvable,not rated,AC-3,60,No solution,0.0025329,0,N/A
+puzzles/valid/8x8_challenging.txt,8,valid,challenging,Basic Backtracking,60,Solved,5.973666553,603869,True
+puzzles/valid/8x8_challenging.txt,8,valid,challenging,AC-3,60,Solved,0.127476678,35,True
+puzzles/valid/8x8_easy.txt,8,valid,easy,Basic Backtracking,60,Solved,0.001227274,71,True
+puzzles/valid/8x8_easy.txt,8,valid,easy,AC-3,60,Solved,0.009528012,0,True
+puzzles/unsolvable/8x8_unsolvable.txt,8,unsolvable,not rated,Basic Backtracking,60,No solution,3.910316368,761000,N/A
+puzzles/unsolvable/8x8_unsolvable.txt,8,unsolvable,not rated,AC-3,60,No solution,0.021611716,0,N/A
+puzzles/invalid/malformed_data_before_heading.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_duplicate_column.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_duplicate_row.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_invalid_integer.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_invalid_operator.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_missing_heading.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_nonadjacent.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_out_of_order.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_out_of_range.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_repeated_cell.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_repeated_givens.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_repeated_inequalities.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_repeated_size.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_reversed_duplicate.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_unknown_heading.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/invalid/malformed_wrong_fields.txt,4,malformed,N/A,GUI loader,,Invalid puzzle,N/A,N/A,N/A
+puzzles/valid/4x4_easy.txt,4,forced timeout,easy,Basic Backtracking,0,Time out,0.000016732,0,N/A
+puzzles/valid/4x4_easy.txt,4,forced timeout,easy,AC-3,0,Time out,0.000028667,0,N/A
+puzzles/valid/4x4_single_blank.txt,4,single blank,easy,Basic Backtracking,60,Solved,0.000144799,4,True
+puzzles/valid/4x4_single_blank.txt,4,single blank,easy,AC-3,60,Solved,0.001049098,0,True
+puzzles/valid/6x6_inequalities_only.txt,6,inequalities only / propagation without search,easy,Basic Backtracking,60,Solved,0.001634636,126,True
+puzzles/valid/6x6_inequalities_only.txt,6,inequalities only / propagation without search,easy,AC-3,60,Solved,0.014024728,0,True
+puzzles/valid/6x6_reversed_endpoints.txt,6,equivalent reversed clues,easy,Basic Backtracking,60,Solved,0.00046171,27,True
+puzzles/valid/6x6_reversed_endpoints.txt,6,equivalent reversed clues,easy,AC-3,60,Solved,0.00289544,0,True
+puzzles/valid/8x8_row_major_friendly.txt,8,AC-3 overhead with fewer nodes,not rated,Basic Backtracking,60,Solved,0.002254773,288,True
+puzzles/valid/8x8_row_major_friendly.txt,8,AC-3 overhead with fewer nodes,not rated,AC-3,60,Solved,0.20639542,44,True
+puzzles/valid/8x8_heuristic_detour.txt,8,AC-3 heuristic detour / more nodes,not rated,Basic Backtracking,60,Solved,0.003020408,288,True
+puzzles/valid/8x8_heuristic_detour.txt,8,AC-3 heuristic detour / more nodes,not rated,AC-3,60,Solved,1.220321798,392,True

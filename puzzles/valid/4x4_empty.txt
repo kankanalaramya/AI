@@ -1,0 +1,5 @@
+# Empty sections are valid; multiple solutions are allowed.
+SIZE
+4
+GIVENS
+INEQUALITIES
