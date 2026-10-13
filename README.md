@@ -2,6 +2,15 @@
 
 COSC-4117EL-01 — Artificial Intelligence, Assignment 1 (Fall 2026).
 
+- [**Github Repository**](https://github.com/kankanalaramya/AI)
+
+**Group #19**
+
+**Members:**
+- Yapa Sugandi Upeksha - 0477736
+- Kankanala Ramya - 0477092
+
+
 This Python application models Futoshiki as a constraint satisfaction problem.
 Each cell contains an integer from 1 to N; rows and columns contain no repeated
 values, fixed clues remain unchanged, and all inequality clues must hold.
