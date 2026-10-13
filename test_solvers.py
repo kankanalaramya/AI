@@ -28,7 +28,7 @@ def small_puzzle(size=2):
 
 class SolverTests(unittest.TestCase):
     def test_all_valid_and_unsolvable_samples(self):
-        paths = sorted(SAMPLES.rglob('[1468]*.txt')) + [SAMPLES.parent / 'puzzle4.txt']
+        paths = sorted(SAMPLES.rglob('[1468]*.txt')) + [SAMPLES.parent / 'puzzle_sample.txt']
         for path in paths:
             puzzle = load_puzzle(path)
             before = deepcopy(puzzle.__dict__)

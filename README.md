@@ -40,7 +40,7 @@ python3 - <<'PY'
 from ac3_solver import solve_with_ac3
 from puzzle import load_puzzle, validate_solution
 
-puzzle = load_puzzle("puzzle4.txt")
+puzzle = load_puzzle("puzzle_sample.txt")
 result = solve_with_ac3(puzzle, timeout=60)
 print(f"Status: {result.status}")
 print(f"Runtime: {result.runtime:.6f} seconds")
